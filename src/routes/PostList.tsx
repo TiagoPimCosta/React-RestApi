@@ -4,7 +4,7 @@ import Post from "../dtos/posts";
 import { useNavigate } from "react-router-dom";
 
 function PostList() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const [posts, setPosts] = useState<Post[]>([]);
 
@@ -17,9 +17,6 @@ function PostList() {
   function nextPath(path: string) {
     navigate(path);
   }
-  function navigatePost(id: number) {
-    nextPath("/" + id);
-  }
 
   return (
     <>
@@ -27,7 +24,7 @@ function PostList() {
         <div id={post.id.toString()}>
           <p>
             <strong>{post.id}.</strong>{" "}
-            <a onClick={() => navigatePost(post.id)}>{post.title}</a>
+            <a onClick={() => nextPath("/post/" + post.id)}>{post.title}</a>
           </p>
           <p>{post.body}</p>
         </div>
