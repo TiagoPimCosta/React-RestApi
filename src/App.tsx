@@ -1,27 +1,23 @@
-import { useEffect, useState } from "react";
 import "./App.css";
-import { getPosts } from "./services/postService";
-import Post from "./dtos/posts";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import PostList from "./routes/PostList";
+import PostDetails from "./routes/PostDetails";
+import Navbar from "./components/Navbar";
+import NotFound from "./routes/NotFound";
 
 function App() {
-  const [posts, setPosts] = useState<Post[]>([]);
-
-  useEffect(() => {
-    getPosts().then((response) => {
-      setPosts(response);
-    });
-  }, []);
-
   return (
     <>
-      {posts.map((post) => (
-        <div id={post.id.toString()}>
-          <p>
-            <strong>{post.id}.</strong> {post.title}
-          </p>
-          <p>{post.body}</p>
-        </div>
-      ))}
+      <BrowserRouter>
+        <Navbar />
+        <main className="px-8 py-6">
+          <Routes>
+            <Route path="/" element={<PostList />} />
+            <Route path="/post/:id" element={<PostDetails />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+      </BrowserRouter>
     </>
   );
 }
