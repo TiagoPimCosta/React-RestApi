@@ -1,19 +1,18 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PostList from "./routes/PostList";
-import PostDetails from "./routes/PostDetails";
+import { PostList, PostDetails, CommentList, NotFound } from "./routes";
 import Navbar from "./components/Navbar";
-import NotFound from "./routes/NotFound";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Navbar />
-        <main className="px-8 py-6">
+        <main className="px-6 py-20 bg-gray-100">
           <Routes>
             <Route path="/" element={<PostList />} />
             <Route path="/post/:id" element={<PostDetails />} />
+            <Route path="/comments" element={<CommentList />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

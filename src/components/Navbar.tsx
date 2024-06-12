@@ -1,13 +1,8 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [navVisible, setNavVisible] = useState(false);
-  const navigate = useNavigate();
-
-  function nextPath(path: string) {
-    navigate(path);
-  }
 
   const handleNav = () => {
     setNavVisible(!navVisible);
@@ -19,7 +14,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <NavLink
           to={"/"}
@@ -76,27 +71,26 @@ const Navbar = () => {
         <ul
           className={
             navVisible
-              ? "fixed md:hidden left-0 top-0 w-[60%] h-full bg-white border-gray-200 dark:bg-gray-900 ease-in-out duration-500"
-              : "ease-in-out w-[60%] duration-750 fixed top-0 bottom-0 left-[-100%]"
+              ? "fixed md:hidden left-0 top-[4.5rem] w-[60%] h-full bg-white border-gray-200 dark:bg-gray-900 ease-in-out duration-500 p-4 gap-[2rem]"
+              : "ease-in-out bg-white dark:bg-gray-900 w-[60%] duration-500 fixed top-[4.5rem] bottom-0 left-[-100%]"
           }
         >
-          {/* Mobile Logo */}
-          <h1 className="w-full text-3xl font-bold text-[#00df9a] m-4">
-            REACT.
-          </h1>
-
           {/* Mobile Navigation Items */}
           {navItems.map((item) => (
-            <li
+            <NavLink
+              to={item.route}
               key={item.id}
               onClick={() => {
-                nextPath(item.route);
                 handleNav();
               }}
-              className="p-4 border-b rounded-xl hover:bg-[#fff] duration-300 hover:text-black cursor-pointer border-gray-600"
+              className={({ isActive }) => {
+                return isActive
+                  ? "block py-2 px-3 text-blue-700 dark:text-blue-700"
+                  : "block py-2 px-3 text-gray-900 dark:text-white";
+              }}
             >
               {item.text}
-            </li>
+            </NavLink>
           ))}
         </ul>
       </div>
