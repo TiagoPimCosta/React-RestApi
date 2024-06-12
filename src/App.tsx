@@ -1,6 +1,6 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { PostList, PostDetails, NotFound } from "./routes";
+import { PostList, PostDetails, CommentList, NotFound } from "./routes";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -8,13 +8,14 @@ function App() {
     <>
       <BrowserRouter>
         <Navbar />
-        <div className=" p-6">
+        <main className="px-6 py-20 bg-gray-100">
           <Routes>
             <Route path="/" element={<PostList />} />
             <Route path="/post/:id" element={<PostDetails />} />
+            <Route path="/comments" element={<CommentList />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
-        </div>
+        </main>
       </BrowserRouter>
     </>
   );

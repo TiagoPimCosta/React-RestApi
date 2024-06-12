@@ -14,7 +14,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+    <nav className="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <NavLink
           to={"/"}
@@ -71,14 +71,10 @@ const Navbar = () => {
         <ul
           className={
             navVisible
-              ? "fixed md:hidden left-0 top-0 w-[60%] h-full bg-white border-gray-200 dark:bg-gray-900 ease-in-out duration-500"
-              : "ease-in-out w-[60%] duration-750 fixed top-0 bottom-0 left-[-100%]"
+              ? "fixed md:hidden left-0 top-[4.5rem] w-[60%] h-full bg-white border-gray-200 dark:bg-gray-900 ease-in-out duration-500 p-4 gap-[2rem]"
+              : "ease-in-out bg-white dark:bg-gray-900 w-[60%] duration-500 fixed top-[4.5rem] bottom-0 left-[-100%]"
           }
         >
-          {/* Mobile Logo */}
-          <h1 className="w-full text-3xl font-bold text-[#00df9a] m-4">
-            REACT.
-          </h1>
           {/* Mobile Navigation Items */}
           {navItems.map((item) => (
             <NavLink
@@ -89,8 +85,8 @@ const Navbar = () => {
               }}
               className={({ isActive }) => {
                 return isActive
-                  ? "block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
-                  : "p-4 rounded-xl hover:bg-[#fff] duration-300 hover:text-black cursor-pointer";
+                  ? "block py-2 px-3 text-blue-700 dark:text-blue-700"
+                  : "block py-2 px-3 text-gray-900 dark:text-white";
               }}
             >
               {item.text}

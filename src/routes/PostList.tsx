@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPosts } from "../services/postService";
+import { getAllPosts } from "../services/postService";
 import Post from "../dtos/post";
 import { ListElement } from "../components";
 
@@ -7,7 +7,7 @@ function PostList() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    getPosts().then((response) => {
+    getAllPosts().then((response) => {
       setPosts(response);
     });
   }, []);
