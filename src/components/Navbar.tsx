@@ -1,13 +1,8 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const [navVisible, setNavVisible] = useState(false);
-  const navigate = useNavigate();
-
-  function nextPath(path: string) {
-    navigate(path);
-  }
 
   const handleNav = () => {
     setNavVisible(!navVisible);
@@ -84,19 +79,22 @@ const Navbar = () => {
           <h1 className="w-full text-3xl font-bold text-[#00df9a] m-4">
             REACT.
           </h1>
-
           {/* Mobile Navigation Items */}
           {navItems.map((item) => (
-            <li
+            <NavLink
+              to={item.route}
               key={item.id}
               onClick={() => {
-                nextPath(item.route);
                 handleNav();
               }}
-              className="p-4 border-b rounded-xl hover:bg-[#fff] duration-300 hover:text-black cursor-pointer border-gray-600"
+              className={({ isActive }) => {
+                return isActive
+                  ? "block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
+                  : "p-4 rounded-xl hover:bg-[#fff] duration-300 hover:text-black cursor-pointer";
+              }}
             >
               {item.text}
-            </li>
+            </NavLink>
           ))}
         </ul>
       </div>

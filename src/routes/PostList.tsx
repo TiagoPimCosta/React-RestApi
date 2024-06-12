@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { getPosts } from "../services/postService";
-import Post from "../dtos/posts";
-import { useNavigate } from "react-router-dom";
+import Post from "../dtos/post";
+import { ListElement } from "../components";
 
 function PostList() {
-  const navigate = useNavigate();
-
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
@@ -14,22 +12,21 @@ function PostList() {
     });
   }, []);
 
-  function nextPath(path: string) {
-    navigate(path);
-  }
-
   return (
-    <>
-      {posts.map((post) => (
-        <div id={post.id.toString()}>
-          <p>
-            <strong>{post.id}.</strong>{" "}
-            <a onClick={() => nextPath("/post/" + post.id)}>{post.title}</a>
-          </p>
-          <p>{post.body}</p>
-        </div>
-      ))}
-    </>
+    <div className="flex flex-col space-y-4">
+      {posts ? (
+        <>
+          {posts.map((post) => (
+            <ListElement
+              id={post.id}
+              route={"/post/" + post.id}
+              title={post.title}
+              body={post.body}
+            />
+          ))}
+        </>
+      ) : null}
+    </div>
   );
 }
 
