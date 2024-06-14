@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllComments } from "../services/postService";
+import { getAllComments } from "../services/commentService";
 import { ListElement } from "../components";
 import Comment from "../dtos/comment";
 
