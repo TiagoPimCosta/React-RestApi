@@ -10,6 +10,8 @@ import {
   editCommentRequest,
 } from "../services/commentService";
 
+import { DefaultPagination } from "../components/DefaultPagination";
+
 function PostDetails() {
   const params = useParams();
 
@@ -19,6 +21,8 @@ function PostDetails() {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [comment, setComment] = useState<string>("");
+
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     getPostDetails(Number(params.id)).then((response) => {
@@ -57,6 +61,12 @@ function PostDetails() {
     setEmail("");
     setComment("");
   };
+
+  const commentsPaginated = comments.slice(
+    currentPage * 2,
+    currentPage * 2 + 2
+  );
+
   return (
     <>
       <div>
@@ -118,7 +128,7 @@ function PostDetails() {
           </form>
           {comments ? (
             <>
-              {comments.map((comment) => (
+              {commentsPaginated.map((comment) => (
                 <ListElement
                   key={comment.id}
                   id={comment.id}
@@ -130,6 +140,12 @@ function PostDetails() {
                   onDelete={deleteComment}
                 />
               ))}
+              <DefaultPagination
+                page={currentPage}
+                changePage={setCurrentPage}
+                totalItems={comments.length}
+                itemsPerPage={2}
+              />
             </>
           ) : null}
         </div>
