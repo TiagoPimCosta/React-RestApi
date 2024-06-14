@@ -1,25 +1,62 @@
 import { useParams } from "react-router-dom";
 import { getPostComments, getPostDetails } from "../services/postService";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import Post from "../dtos/post";
 import Comment from "../dtos/comment";
 import { ListElement } from "../components";
+import {
+  addCommentRequest,
+  deleteCommentRequest,
+  editCommentRequest,
+} from "../services/commentService";
 
 function PostDetails() {
   const params = useParams();
 
-  const [post, setPost] = useState<Post>(null);
+  const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
 
+  const [name, setName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [comment, setComment] = useState<string>("");
+
   useEffect(() => {
-    getPostDetails(parseInt(params.id)).then((response) => {
+    getPostDetails(Number(params.id)).then((response) => {
       setPost(response);
     });
-    getPostComments(parseInt(params.id)).then((response) => {
+    getPostComments(Number(params.id)).then((response) => {
       setComments(response);
     });
   }, []);
 
+  const submitNewComment = (e: FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const id = Math.floor(Math.random() * 100) + 500;
+    const postId = Math.floor(Math.random() * 100) + 1;
+    // Add Comment In Api
+    addComment({ id, postId, name, email, body: comment });
+    clearForm();
+  };
+
+  const addComment = (newComment: Comment) => {
+    addCommentRequest(newComment);
+    setComments([...comments, newComment]);
+  };
+
+  const editComment = (comment: Comment) => {
+    editCommentRequest(comment);
+  };
+
+  const deleteComment = (id: number) => {
+    deleteCommentRequest(id);
+    setComments(comments.filter((comment) => comment.id != id));
+  };
+
+  const clearForm = () => {
+    setName("");
+    setEmail("");
+    setComment("");
+  };
   return (
     <>
       <div>
@@ -39,8 +76,10 @@ function PostDetails() {
               <label className="block text-gray-700 font-bold mb-2">Name</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="name"
+                name="name"
                 type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 placeholder="Enter your name"
               />
             </div>
@@ -50,8 +89,10 @@ function PostDetails() {
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="name"
+                name="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email"
               />
             </div>
@@ -61,25 +102,32 @@ function PostDetails() {
               </label>
               <textarea
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="comment"
+                name="body"
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
                 placeholder="Enter your comment"
               ></textarea>
             </div>
             <button
-              className="bg-cyan-500 hover:bg-cyan-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-gray-100 hover:bg-gray-300 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="submit"
+              onClick={submitNewComment}
             >
-              Submit
+              Comment
             </button>
           </form>
           {comments ? (
             <>
               {comments.map((comment) => (
                 <ListElement
+                  key={comment.id}
                   id={comment.id}
                   title={comment.name}
                   subtitle={comment.email}
                   body={comment.body}
+                  isEditable={true}
+                  onEdit={editComment}
+                  onDelete={deleteComment}
                 />
               ))}
             </>
