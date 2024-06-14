@@ -18,6 +18,7 @@ function PostList() {
         <>
           {posts.map((post) => (
             <ListElement
+              key={post.id}
               id={post.id}
               route={"/post/" + post.id}
               title={post.title}

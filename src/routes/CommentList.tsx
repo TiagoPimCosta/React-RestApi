@@ -18,6 +18,7 @@ function CommentList() {
         <>
           {comments.map((comment) => (
             <ListElement
+              key={comment.id}
               id={comment.id}
               route={"/post/" + comment.postId}
               title={comment.name}
